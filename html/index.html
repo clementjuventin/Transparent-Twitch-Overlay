@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Twitch</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+</head>
+<body>
+    <div id="container">
+    </div>
+</body>
+</html>
+
+<style>
+    .message{
+        padding: 0.2rem;
+    }
+</style>
+
+<script>window.$ = window.jQuery = require('jquery');</script>
+<script>
+    const ipc = require('electron').ipcRenderer;
+    const container = document.getElementById('container')
+    const body = document.body
+
+    const height = window.innerHeight
+
+    body.style.backgroundColor = "rgba(0, 111, 255, "+0.5+")"; 
+    body.style.color = "rgba(255, 255, 255)"; 
+
+    ipc.send('init')
+
+    ipc.on('message', (event, data)=>{
+        var mess = document.createElement("div")
+        mess.innerHTML='<span>'+(new Date()).toLocaleTimeString()+'</span> <span>('+data.author+'):</span> <span>'+data.msg+'</span>'
+        $(mess).addClass("message");
+
+        container.innerHTML+=mess.outerHTML
+        testOverflow()
+    })
+    
+    ipc.on('opacityChange', (event, value)=>{
+        console.log(value)
+        body.style.backgroundColor = "rgba(0, 111, 255, "+value/100+")";
+        body.style.color = "rgba(255, 255, 255, "+(value==0?0.3:1)+")"; 
+    })
+
+
+    function testOverflow(){
+        messageHeight = 0
+        messages = Array.from(document.getElementsByClassName('message'))
+        messages.forEach(element=>{
+            messageHeight+=element.clientHeight
+        })
+        
+        if(messageHeight>3*height/4){
+            container.removeChild(container.firstElementChild)
+            testOverflow()
+        }
+    }
+</script>

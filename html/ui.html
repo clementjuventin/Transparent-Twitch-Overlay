@@ -1,0 +1,116 @@
+
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <title>Twitch</title>
+      <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+   </head>
+   <style>
+      * {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+      }
+      body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      }
+      div {
+      padding: 0 2rem;
+      text-align: center;
+      }
+      #rangeValue {
+      position: relative;
+      display: block;
+      text-align: center;
+      font-size: 6em;
+      color: white;
+      font-weight: 400;
+      }
+      .range {
+      width: 300px;
+      height: 15px;
+      -webkit-appearance: none;
+      background: #111;
+      outline: none;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
+      }
+      .range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: black;
+      cursor: pointer;
+      border: 4px solid white;
+      box-shadow: -407px 0 0 400px black;
+      }
+      #viewerCount{
+      padding: 0.2rem 0.4rem;
+      }
+      #form{
+      display: flex;
+      margin-bottom: 0.5rem;
+      }
+      #form > *{
+      padding: 0.4em 0.5em;
+      border: none;
+      outline: none;
+      background-color: white;
+      font: inherit;
+      flex: 1;
+      }
+      .message{
+      padding: 0.2rem;
+      }
+   </style>
+   <body style="color: aliceblue; background-color: #334443;">
+      <body>
+         <div>
+            <form id="form">
+               <input id="messageInput" type="text" autocomplete="off"/>
+               <button type="submit" style="background-color: #8858ce;color: white;">Send</button>
+            </form>
+            <input class="range" type="range" value="50" min="0" max="100" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></Input>
+            <div id="viewerCount"><span id="viewerCountSpan"></span> <i class="far fa-eye" style="color: white;"></i></div>
+         </div>
+   </body>
+   </body>
+</html>
+<script>window.$ = window.jQuery = require('jquery');</script>
+<script>
+   const ipc = require('electron').ipcRenderer;
+   const container = document.getElementById('container')  
+   
+   const form = document.getElementById('form')
+   const messageInput = document.getElementById('messageInput')
+   const viewerCountSpan = document.getElementById('viewerCountSpan')
+   
+   ipc.send('initUI')
+   
+   function rangeSlide(value) {
+       ipc.send('opacityChange', value)
+   }
+   
+   ipc.on('titleUpdate', (event, newTitle)=>{
+       document.title = newTitle
+   })
+   ipc.on('viewUpdate', (event, vueCount)=>{
+      viewerCountSpan.innerText = vueCount
+   })
+   
+   form.addEventListener('submit', function(event){
+     event.preventDefault();
+     ipc.send('message', messageInput.value)
+     messageInput.value = ""
+   })
+</script>
+
