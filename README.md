@@ -92,4 +92,4 @@ async function getStreamData() {
 
 ## Liscence
 
-I don't know a lot about liscences, feel free to use and reuse this code as you cant.
+I don't know a lot about liscences, feel free to use and reuse this code as you want.
