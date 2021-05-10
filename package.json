@@ -7,7 +7,7 @@
     "start": "electron ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Clément Juventin",
   "license": "ISC",
   "devDependencies": {
     "electron": "^12.0.6"
