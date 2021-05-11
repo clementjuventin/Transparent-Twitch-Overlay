@@ -1,5 +1,12 @@
 # Javascript-ElectronJs-TwitchOverlay
 
+## Intro
+This software was made for people like me who wanna stream their coding adventure on a single screen. It makes it easy to interract with the chat and keep coding or playing at the same time. 
+
+The app uses ElectronJS and Twitch API to work, if you wanna understand better how the API works, you can also take a look at my code. I use IRC and oauth to get app access token.
+
+Let me know if this project was usefull to you!
+ 
 ## Configuration
 
 Make a .env file to the root of the project. Here is the template :
@@ -92,4 +99,4 @@ async function getStreamData() {
 
 ## Liscence
 
-I don't know a lot about liscences, feel free to use and reuse this code as you cant.
+I don't know a lot about liscences, feel free to use and reuse this code as you want.
