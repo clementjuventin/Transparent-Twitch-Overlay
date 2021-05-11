@@ -21,6 +21,7 @@ function createChatWindow(width, height, windowWidth) {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: false,
+            icon: __dirname + '/assets/icon.ico'
         }
     })
     chatWindow.setBounds({
@@ -44,6 +45,7 @@ function createUIWindow(width, height, windowWidth) {
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: false,
+            icon: __dirname + '/assets/icon.ico'
         }
     })
     UIWindow.setBounds({
