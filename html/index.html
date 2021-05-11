@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Twitch</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
 </head>
 <body>
     <div id="container">
@@ -12,9 +11,15 @@
 </html>
 
 <style>
+    @font-face {
+    font-family: 'sarala';
+    src: url('../assets/sarala.ttf');
+    }
     .message{
         padding: 0.2rem;
+        font-family: 'sarala';
     }
+    
 </style>
 
 <script>window.$ = window.jQuery = require('jquery');</script>
@@ -40,7 +45,6 @@
     })
     
     ipc.on('opacityChange', (event, value)=>{
-        console.log(value)
         body.style.backgroundColor = "rgba(0, 111, 255, "+value/100+")";
         body.style.color = "rgba(255, 255, 255, "+(value==0?0.3:1)+")"; 
     })

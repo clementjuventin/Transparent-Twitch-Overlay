@@ -96,7 +96,7 @@ ipcMain.on('initUI', (eventUI)=>{
     }
     async function updateViewerCount(){
         const streamData = await getStreamData()
-        eventUI.reply('viewUpdate', streamData.data[0].viewer_count)
+        eventUI.reply('viewUpdate', streamData.data[0].cviewer_count)
     }
     load()
     setInterval(()=>{
