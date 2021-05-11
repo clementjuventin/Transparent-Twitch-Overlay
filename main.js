@@ -12,8 +12,10 @@ const axios = require('axios')
 
 require('dotenv').config()
 
+var chatWindow;
+var ignoreMouseEvent = true
 function createChatWindow(width, height, windowWidth) {
-    const chatWindow = new BrowserWindow({
+    chatWindow = new BrowserWindow({
         transparent: true,
         frame: false,
         webPreferences: {
@@ -33,26 +35,26 @@ function createChatWindow(width, height, windowWidth) {
     //chatWindow.webContents.openDevTools()
     chatWindow.loadFile('./html/index.html')
     chatWindow.removeMenu()
-    chatWindow.setIgnoreMouseEvents(true)
+    chatWindow.setIgnoreMouseEvents(ignoreMouseEvent)
     chatWindow.setAlwaysOnTop(true, 'screen');
 }
 
 function createUIWindow(width, height, windowWidth) {
     const UIWindow = new BrowserWindow({
-        transparent: true,
+        frame: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
             contextIsolation: false,
             enableRemoteModule: false,
-            icon: __dirname + '/assets/icon.ico'
+            icon: __dirname + '/assets/icon.ico',
         }
     })
     UIWindow.setBounds({
         x: width - windowWidth,
-        y: height - 150,
+        y: height - 100,
         width: windowWidth,
-        height: 150
+        height: 100
     })
     //UIWindow.webContents.openDevTools()
     UIWindow.loadFile('./html/ui.html')
@@ -91,12 +93,12 @@ ipcMain.on('init', (event) => {
 ipcMain.on('initUI', (eventUI)=>{
     async function load(){
         const streamData = await getStreamData()
-        eventUI.reply('titleUpdate', streamData.data[0].title)
-        eventUI.reply('viewUpdate', streamData.data[0].viewer_count)
+        eventUI.reply('titleUpdate', streamData==null?streamData.data[0].title:'error')
+        eventUI.reply('viewUpdate', streamData==null?streamData.data[0].viewer_count:0)
     }
     async function updateViewerCount(){
         const streamData = await getStreamData()
-        eventUI.reply('viewUpdate', streamData.data[0].cviewer_count)
+        eventUI.reply('viewUpdate', streamData==null?streamData.data[0].viewer_count:0)
     }
     load()
     setInterval(()=>{
@@ -129,6 +131,10 @@ async function startListening(event) {
     client.connect();
 
     //Listeners
+    ipcMain.on('changeWindowSelection', (e, value) => {
+        ignoreMouseEvent=!ignoreMouseEvent
+        chatWindow.setIgnoreMouseEvents(ignoreMouseEvent)
+    })
     ipcMain.on('opacityChange', (e, value) => {
         event.reply('opacityChange', value)
     })
@@ -152,30 +158,6 @@ async function startListening(event) {
             msg: msg,
             author: context["display-name"]
         })
-        /*
-        {
-          "badge-info": null,
-          "badges": null,
-          "client-nonce": "85271d22465bab010712e0716acb60aa",
-          "color": "#DAA520",
-          "display-name": "Acediea",
-          "emotes": null,
-          "flags": null,
-          "id": "6250e1bb-ea82-4ef2-9c11-c858820fd173",
-          "mod": false,
-          "room-id": "683115643",
-          "subscriber": false, ->tester
-          "tmi-sent-ts": "1620332512944",
-          "turbo": false,
-          "user-id": "130542544",
-          "user-type": null,
-          "emotes-raw": null,
-          "badge-info-raw": null,
-          "badges-raw": null,
-          "username": "acediea",
-          "message-type": "chat" ->tester
-        }
-        */
     }
     // Called every time the bot connects to Twitch chat
     function onConnectedHandler(addr, port) {
@@ -202,7 +184,7 @@ async function getStreamData() {
     }).then(result => {
         streamData = result.data
     }).catch(error => {
-        console.log(error)
+        streamData = null
     });
 
     return streamData;

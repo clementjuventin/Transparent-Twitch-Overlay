@@ -9,21 +9,15 @@
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
    </head>
    <style>
-      * {
-      margin: 0;
-      padding: 0;
-      font-family: "Poppins", sans-serif;
-      }
       body {
-      display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
       overflow: hidden;
+      margin: 0;
+         padding: 0;
       }
-      div {
-      padding: 0 2rem;
-      text-align: center;
+      body > div{
+         width: 100%;
       }
       #rangeValue {
       position: relative;
@@ -34,7 +28,7 @@
       font-weight: 400;
       }
       .range {
-      width: 300px;
+      width:100%;
       height: 15px;
       -webkit-appearance: none;
       background: #111;
@@ -51,7 +45,6 @@
       background: black;
       cursor: pointer;
       border: 4px solid white;
-      box-shadow: -407px 0 0 400px black;
       }
       #viewerCount{
       padding: 0.2rem 0.4rem;
@@ -59,8 +52,9 @@
       #form{
       display: flex;
       margin-bottom: 0.5rem;
+      flex-wrap: wrap;
       }
-      #form > *{
+      button{
       padding: 0.4em 0.5em;
       border: none;
       outline: none;
@@ -71,17 +65,40 @@
       .message{
       padding: 0.2rem;
       }
+      .topMenu > button{
+         padding: 0 0.5rem;
+         height: 2rem;
+         text-align: center;
+         vertical-align: middle;
+         color: white;
+         flex:1;
+      }
+      .topMenu{
+         display: flex;
+      }
+      #dragBtn{
+         -webkit-user-select: none;
+         -webkit-app-region: drag;
+         cursor: grab;
+      }
    </style>
    <body style="color: aliceblue; background-color: #334443;">
       <body>
-         <div>
-            <form id="form">
-               <input id="messageInput" type="text" autocomplete="off"/>
-               <button type="submit" style="background-color: #8858ce;color: white;">Send</button>
-            </form>
-            <input class="range" type="range" value="50" min="0" max="100" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></Input>
-            <div id="viewerCount"><span id="viewerCountSpan"></span> <i class="far fa-eye" style="color: white;"></i></div>
-         </div>
+            <div class="topMenu">
+               <button type="button" id="dragBtn" style="background-color: orange;"><i class="far fa-hand-paper"></i>
+               </button><button id="selectBtn" type="button" style="background-color: green;"><i class="fas fa-mouse-pointer"></i>
+               </button><button type="button" style="background-color: blue;"><span id="viewerCountSpan"></span> <i class="far fa-eye"></i>
+               </button><button type="button" id="closeBtn" style="background-color: red;"><i class="fas fa-times-circle"></i></button>
+            </div>
+            <div>
+               <form id="form">
+                  <input style="flex:3" id="messageInput" type="text"/>
+                  <button type="submit" style="background-color: #8858ce;color: white;">Send</button>
+               </form>
+            </div>
+            <div>
+               <input class="range" type="range" value="50" min="0" max="100" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></Input>
+            </div>
    </body>
    </body>
 </html>
@@ -111,6 +128,12 @@
      event.preventDefault();
      ipc.send('message', messageInput.value)
      messageInput.value = ""
+   })
+   document.getElementById('closeBtn').addEventListener('click', function(){
+      window.close();
+   })
+   document.getElementById('selectBtn').addEventListener('click', function(){
+      ipc.send('changeWindowSelection')
    })
 </script>
 
