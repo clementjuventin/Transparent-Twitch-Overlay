@@ -9,10 +9,10 @@ Let me know if this project was usefull to you!
  
 ## Configuration
 
-Make a .env file to the root of the project. Here is the template :
+Make a .env file (just named .env) to the root of the project. Here is the template :
 
 ```json
-BOT_USERNAME=Your_bot_name  
+BOT_USERNAME=Your_bot_name (Name it as you want)
 OAUTH_TOKEN=Your_oauth_token (https://twitchapps.com/tmi/)
 CHANNEL_NAME=Your_channel_name  
 CLIENT_ID=Your_client_id (https://dev.twitch.tv/console/apps)  
