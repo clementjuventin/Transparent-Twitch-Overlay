@@ -13,6 +13,7 @@ const axios = require('axios')
 require('dotenv').config()
 
 var chatWindow;
+var UIWindow;
 var ignoreMouseEvent = true
 function createChatWindow(width, height, windowWidth) {
     chatWindow = new BrowserWindow({
@@ -40,7 +41,7 @@ function createChatWindow(width, height, windowWidth) {
 }
 
 function createUIWindow(width, height, windowWidth) {
-    const UIWindow = new BrowserWindow({
+    UIWindow = new BrowserWindow({
         frame: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -134,6 +135,8 @@ async function startListening(event) {
     ipcMain.on('changeWindowSelection', (e, value) => {
         ignoreMouseEvent=!ignoreMouseEvent
         chatWindow.setIgnoreMouseEvents(ignoreMouseEvent)
+        chatWindow.setAlwaysOnTop(true, 'screen');
+        UIWindow.setAlwaysOnTop(true, 'screen');
     })
     ipcMain.on('opacityChange', (e, value) => {
         event.reply('opacityChange', value)
