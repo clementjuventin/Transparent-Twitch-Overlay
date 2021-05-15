@@ -94,12 +94,12 @@ ipcMain.on('init', (event) => {
 ipcMain.on('initUI', (eventUI)=>{
     async function load(){
         const streamData = await getStreamData()
-        eventUI.reply('titleUpdate', streamData==null?streamData.data[0].title:'error')
-        eventUI.reply('viewUpdate', streamData==null?streamData.data[0].viewer_count:0)
+        eventUI.reply('titleUpdate', streamData===null?'error':streamData.data[0].title)
+        eventUI.reply('viewUpdate', streamData===null?0:streamData.data[0].viewer_count)
     }
     async function updateViewerCount(){
         const streamData = await getStreamData()
-        eventUI.reply('viewUpdate', streamData==null?streamData.data[0].viewer_count:0)
+        eventUI.reply('viewUpdate', streamData===null?0:streamData.data[0].viewer_count)
     }
     load()
     setInterval(()=>{
@@ -187,6 +187,7 @@ async function getStreamData() {
     }).then(result => {
         streamData = result.data
     }).catch(error => {
+        console.log(error)
         streamData = null
     });
 
