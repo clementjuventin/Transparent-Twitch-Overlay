@@ -20,7 +20,7 @@ CLIENT_SECRET=Your_client_secret (https://dev.twitch.tv/console/apps again)
 windowWidth=Width_of_chat (400 is pretty good)  
 streamDataUpdate=Time_between_updates_for_stream_data_in_second (30 is a good value)
 ```
-Exemple (with fake data)
+Example (with fake data)
 ```json
 BOT_USERNAME=TwitchBot
 OAUTH_TOKEN=2o21e9aen4rtf3xdet9uorzr63hdql
@@ -97,6 +97,6 @@ async function getStreamData() {
 
 ![--](assets/1.PNG)
 
-## Liscence
+## Licence
 
-I don't know a lot about liscences, feel free to use and reuse this code as you want.
+I don't know a lot about licences, feel free to use and reuse this code as you wish.
