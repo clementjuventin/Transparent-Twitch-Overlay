@@ -31,7 +31,7 @@ function createChatWindow(width, height, windowWidth) {
         x: width - windowWidth,
         y: 0,
         width: windowWidth,
-        height: height
+        height: 200
     })
     //chatWindow.webContents.openDevTools()
     chatWindow.loadFile('./html/index.html')
@@ -53,9 +53,9 @@ function createUIWindow(width, height, windowWidth) {
     })
     UIWindow.setBounds({
         x: width - windowWidth,
-        y: height - 100,
+        y: height - 90,
         width: windowWidth,
-        height: 100
+        height: 90
     })
     //UIWindow.webContents.openDevTools()
     UIWindow.loadFile('./html/ui.html')
@@ -133,8 +133,8 @@ async function startListening(event) {
 
     //Listeners
     ipcMain.on('changeWindowSelection', (e, value) => {
-        ignoreMouseEvent=!ignoreMouseEvent
-        chatWindow.setIgnoreMouseEvents(ignoreMouseEvent)
+        ignoreMouseEvent=!ignoreMouseEvent;
+        chatWindow.setIgnoreMouseEvents(ignoreMouseEvent);
         chatWindow.setAlwaysOnTop(true, 'screen');
         UIWindow.setAlwaysOnTop(true, 'screen');
     })
