@@ -17,8 +17,15 @@ OAUTH_TOKEN=Your_oauth_token (https://twitchapps.com/tmi/)
 CHANNEL_NAME=Your_channel_name  
 CLIENT_ID=Your_client_id (https://dev.twitch.tv/console/apps)  
 CLIENT_SECRET=Your_client_secret (https://dev.twitch.tv/console/apps again)  
-windowWidth=Width_of_chat (400 is pretty good)  
+windowWidth=Width_of_chat (400 is pretty good)
+windowHeight=Height_of_chat (400 is pretty good too or you can put 'full' value if you wanna let the overlay take full of the screen height)
 streamDataUpdate=Time_between_updates_for_stream_data_in_second (30 is a good value)
+
+R=182 (RGB code of the background color, disabled if the rainbow=true)
+G=0
+B=129
+rainbow=true (Set true if you want to let your overlay being multicolored, false in the other case)
+
 ```
 Example (with fake data)
 ```json
@@ -28,7 +35,13 @@ CHANNEL_NAME=clemiscoding
 CLIENT_ID=gzawlerzuo28d2eq1revw23zvf6it5
 CLIENT_SECRET=yf2ljtpsea93hxklbvzerue4nemu9q
 windowWidth=400
+windowHeight=full
 streamDataUpdate=30
+
+R=0
+G=0
+B=0
+rainbow=true
 ```
 
 ## Installation
