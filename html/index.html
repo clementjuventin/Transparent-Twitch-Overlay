@@ -30,9 +30,19 @@
     const container = document.getElementById('container')
     const body = document.body
 
-    const height = window.innerHeight
+    let opacityValue = 0.5
+    let rainbow = false;
+    let R = 0;
+    let G = 0;
+    let B = 0;
 
-    body.style.backgroundColor = "rgba(0, 111, 255, "+0.5+")"; 
+    let height = window.innerHeight
+    window.onresize = function(event) {
+        height = window.innerHeight;
+        testOverflow()
+    };
+
+    body.style.backgroundColor = `rgba(${R}, ${G}, ${B}, 0.5)`;
     body.style.color = "rgba(255, 255, 255)"; 
 
     ipc.send('init')
@@ -45,12 +55,38 @@
         container.innerHTML+=mess.outerHTML
         testOverflow()
     })
+    ipc.on('init', (event, data)=>{
+        rainbow = data.rainbow
+
+        if(rainbow){
+            window.setInterval(function(){
+                updateBackgroundColor();
+                body.style.backgroundColor = `rgba(${R}, ${G}, ${B}, ${opacityValue})`;
+            },50)
+        }
+        else{
+            R = data.RGB.R
+            G = data.RGB.G
+            B = data.RGB.B
+            body.style.backgroundColor = `rgba(${R}, ${G}, ${B}, 0.5)`;
+        }
+    })
     
     ipc.on('opacityChange', (event, value)=>{
-        body.style.backgroundColor = "rgba(0, 111, 255, "+value/100+")";
-        body.style.color = "rgba(255, 255, 255, "+(value==0?0.3:1)+")"; 
+        opacityValue = value/100
+        if(!rainbow)
+            body.style.backgroundColor = `rgba(${R}, ${G}, ${B}, ${opacityValue})`;
+        body.style.color = "rgba(255, 255, 255, "+(value==0?0.3:1)+")";
     })
 
+    function updateBackgroundColor(){  
+        if (R <= 255 && G == 0 && B == 0) R ++;
+        if (R == 255 && B == 0 && G <= 255) G ++;
+        if (R == 255 && G == 255 && B <= 255) B ++;
+        if (B == 255 && G == 255 && R > 0) R --;
+        if (R == 0 && B == 255 && G > 0) G --;
+        if (R == 0 && G == 0 && B > 0) B --;
+    }
 
     function testOverflow(){
         messageHeight = 0
@@ -59,7 +95,7 @@
             messageHeight+=element.clientHeight
         })
         
-        if(messageHeight>3*height/4){
+        if(messageHeight>height){
             container.removeChild(container.firstElementChild)
             testOverflow()
         }

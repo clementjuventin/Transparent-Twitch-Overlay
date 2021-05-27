@@ -69,7 +69,12 @@ function createWindow() {
         height
     } = screen.getPrimaryDisplay().workAreaSize
     const windowWidth = parseInt(process.env.windowWidth)
-    createChatWindow(width, height, windowWidth)
+    let windowHeight = process.env.windowHeight;
+    if(windowHeight==="full")
+        windowHeight = height
+    else
+        windowHeight = parseInt(windowHeight)
+    createChatWindow(width, windowHeight, windowWidth)
     createUIWindow(width, height, windowWidth)
 }
 
@@ -89,7 +94,26 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.on('init', (event) => {
+    if(
+        process.env.R==undefined
+        || process.env.G==undefined
+        || process.env.B==undefined
+        || process.env.rainbow==undefined
+        ){
+        console.log("Error in your .env file. Check the github to see the template.")
+        process.exit(1)
+    }
+
     startListening(event)
+    const data = {
+        RGB:{
+            R:parseInt(process.env.R),
+            G:parseInt(process.env.G),
+            B:parseInt(process.env.B)
+        },
+        rainbow:(process.env.rainbow=='true')
+    }    
+    event.reply('init', data)
 })
 ipcMain.on('initUI', (eventUI)=>{
     async function load(){
@@ -118,8 +142,6 @@ async function startListening(event) {
             process.env.CHANNEL_NAME
         ]
     };
-
-
 
     // Create a client with our options
     const client = new tmi.client(opts);
