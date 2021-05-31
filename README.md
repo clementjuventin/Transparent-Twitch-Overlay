@@ -112,4 +112,4 @@ async function getStreamData() {
 
 ## Licence
 
-I don't know a lot about licences, feel free to use and reuse this code as you wish.
+GPLv3
