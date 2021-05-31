@@ -17,6 +17,7 @@ var UIWindow;
 var ignoreMouseEvent = true
 function createChatWindow(width, height, windowWidth) {
     chatWindow = new BrowserWindow({
+        skipTaskbar: true,
         transparent: true,
         frame: false,
         webPreferences: {
@@ -42,6 +43,7 @@ function createChatWindow(width, height, windowWidth) {
 
 function createUIWindow(width, height, windowWidth) {
     UIWindow = new BrowserWindow({
+        skipTaskbar: true,
         frame: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -169,6 +171,9 @@ async function startListening(event) {
             msg: value,
             author: process.env.CHANNEL_NAME
         })
+    })
+    ipcMain.on('quit', (e) =>{
+        app.quit()
     })
 
     // Called every time a message comes in

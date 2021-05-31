@@ -129,7 +129,7 @@
      messageInput.value = ""
    })
    document.getElementById('closeBtn').addEventListener('click', function(){
-      window.close();
+      ipc.send('quit')
    })
    document.getElementById('selectBtn').addEventListener('click', function(){
       ipc.send('changeWindowSelection')
